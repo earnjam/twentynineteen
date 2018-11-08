@@ -1,20 +1,15 @@
 /* !Block styles */
 
-.entry-content > *,
-.entry-summary > * {
-
+.entry .entry-content > *,
+.entry .entry-summary > * {
 	margin: 32px $size__spacing-unit;
 	max-width: calc(100vw - (2 * #{ $size__spacing-unit }));
 
+	@include postContentMaxWidth();
+
 	@include media(tablet) {
-		margin: 32px calc(2 * (100vw / 12));
-		max-width: calc(8 * (100vw / 12));
+		margin: 32px 0;
 	}
-
-	@include media(desktop) {
-		max-width: calc(6 * (100vw / 12));
-	}
-
 /*
 	// Set top margins for headings
 	& + h1:before,
@@ -41,27 +36,29 @@
 		margin-right: auto;
 
 		@include media(tablet) {
-			margin-left: calc(2 * (100vw / 12));
-			margin-right: calc(2 * (100vw / 12));
-			max-width: calc(8 * (100vw / 12));
+			width: 100%;
+			max-width: 100%;
 		}
 	}
 
 	&.alignfull {
 		margin-top: calc(2 * #{$size__spacing-unit});
-		margin-right: 0;
 		margin-bottom: calc(2 * #{$size__spacing-unit});
-		margin-left: 0;
-		max-width: 100%;
+		position: relative;
+		left: calc( -12.5% - 75px );
+		width: calc( 125% + 150px );
+		max-width: calc( 125% + 150px );
 	}
 
 	&.alignleft {
+		/*rtl:ignore*/
 		float: left;
 		max-width: calc(5 * (100vw / 12));
 		margin-top: 0;
 
 		@include media(tablet) {
 			max-width: calc(4 * (100vw / 12));
+			/*rtl:ignore*/
 			margin-right: calc(2 * #{$size__spacing-unit});
 		}
 
@@ -71,35 +68,35 @@
 	}
 
 	&.alignright {
+		/*rtl:ignore*/
 		float: right;
 		max-width: calc(5 * (100vw / 12));
 		margin-top: 0;
+		/*rtl:ignore*/
 		margin-left: $size__spacing-unit;
 		margin-right: $size__spacing-unit;
 
 		@include media(tablet) {
 			max-width: calc(4 * (100vw / 12));
+			/*rtl:ignore*/
 			margin-left: calc(2 * #{$size__spacing-unit});
-			margin-right: calc(2 * (100vw / 12));
+			margin-right: 0;
 		}
 	}
 	&.aligncenter {
-
 		margin-left: auto;
 		margin-right: auto;
 
-		@include media(desktop) {
-			margin-left: calc(2 * (100vw / 12));
-			margin-right: calc(2 * (100vw / 12));
-			max-width: calc(10 * (100vw / 12));
-			position: relative;
-			left: 25%;
-			transform: translate(-50%);
+		@include postContentMaxWidth();
+
+		@include media(tablet) {
+			margin-left: 0;
+			margin-right: 0;
 		}
 	}
 }
 
-.entry-content {
+.entry .entry-content {
 
 	//! Audio
 	.wp-block-audio {
@@ -199,10 +196,10 @@
 		li {
 			color: $color__text-light;
 			font-family: $font__heading;
-			font-size: calc(#{$font__size_base} * #{$font__size-lg / 1em} );
+			font-size: calc(#{$font__size_base} * #{$font__size-ratio});
 			font-weight: bold;
 			line-height: $font__line-height-heading;
-			
+
 			&:not(.menu-item-has-children) {
 				padding-bottom: ( .75 * $size__spacing-unit );
 			}
@@ -210,7 +207,7 @@
 			a {
 				text-decoration: none;
 			}
-			
+
 			ul {
 				padding-left: $size__spacing-unit;
 			}
@@ -377,8 +374,8 @@
 
 		&.is-large,
 		&.is-style-large {
-			padding: $size__spacing-unit 0 ($size__spacing-unit) ($size__spacing-unit * 2);
-			margin: $size__spacing-unit 0;
+			margin: $size__spacing-unit;
+			padding: 0;
 			border-left: none;
 
 			p {
@@ -393,9 +390,8 @@
 			}
 
 			@include media(tablet) {
-
-				margin: $size__spacing-unit calc(2 * (100vw / 12));
-				max-width: calc(6 * (100vw / 12));
+				margin: $size__spacing-unit 0;
+				padding: $size__spacing-unit 0;
 
 				p {
 					font-size: $font__size-lg;
@@ -437,15 +433,15 @@
 			width: calc(100vw - (2 * #{ $size__spacing-unit }));
 			max-width: calc(100vw - (2 * #{ $size__spacing-unit }));
 
+			@include postContentMaxWidth();
+
 			@include media(tablet) {
 				font-size: $font__size-xl;
-				width: calc(8 * (100vw / 12));
-				max-width: calc(8 * (100vw / 12));
+				width: $size__site-tablet-content;
 			}
 
 			@include media(desktop) {
-				width: calc(6 * (100vw / 12 ));
-				max-width: calc(6 * (100vw / 12 ));
+				width: $size__site-desktop-content;
 			}
 		}
 
@@ -462,11 +458,6 @@
 				transform: translate(-50%, -50%);
 				top: 50%;
 			}
-		}
-
-		&.aligncenter {
-			margin: 32px calc(2 * (100vw / 12));
-			max-width: calc(6 * (100vw / 12));
 		}
 
 		&.has-left-content {
@@ -507,7 +498,7 @@
 		line-height: $font__line-height-pre;
 		margin: 0;
 		padding: ( $size__spacing-unit * .5 );
-		text-align: left;
+		text-align: center;
 	}
 
 	//! Separator
@@ -515,6 +506,7 @@
 	hr {
 		margin-bottom: (2 * $size__spacing-unit);
 		margin-top: (2 * $size__spacing-unit);
+		text-align: left;
 
 		&:not(.is-style-dots) {
 			background-color: $color__text-light;
@@ -536,11 +528,16 @@
 			}
 		}
 
-		&.is-style-dots:before {
-			color: $color__text-light;
-			font-size: $font__size-lg;
-			letter-spacing: $font__size-sm;
-			padding-left: $font__size-sm;
+		&.is-style-dots {
+			@include postContentMaxWidth();
+			text-align: center;
+
+			&:before {
+				color: $color__text-light;
+				font-size: $font__size-lg;
+				letter-spacing: $font__size-sm;
+				padding-left: $font__size-sm;
+			}
 		}
 	}
 
@@ -598,6 +595,8 @@
 
 		code {
 			font-size: $font__size-md;
+			white-space: pre-wrap;
+    	                word-break: break-word;
 		}
 	}
 
@@ -663,12 +662,12 @@
 		background-color: $color__link;
 
 		p,
-		h1, 
+		h1,
 		h2,
 		h3,
 		h4,
 		h5,
-		h6, 
+		h6,
 		a {
 			color: $color__background-body;
 		}
